@@ -4,3 +4,5 @@ Exempelvis '1965 fysik'
 Fält att välja mellan: fysik, kemi, litteratur, ekonomi, fred, medicin
 Avsluta programmet genom att skriva 'Q'
 """
+
+API = "http://api.nobelprize.org/2.1/nobelPrizes"
