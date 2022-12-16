@@ -1,15 +1,12 @@
 import requests
 
+from constants import HELP_STRING
+
 # Tips: använd sidan nedan för att se vilken data vi får tillbaks och hur apiet fungerar
 # vi använder oss enbart av /nobelPrizes
 # Dokumentation, hjälp samt verktyg för att testa apiet fins här: https://app.swaggerhub.com/apis/NobelMedia/NobelMasterData/2.1
 
-HELP_STRING = """
-Ange ett år och fält
-Exempelvis 1965 fysik
-"""
-
-cat = {"fysik": "phy",
+subject_dict = {"fysik": "phy",
        "kemi": "che",
        "litteratur": "lit",
        "ekonomi": "eco",
@@ -24,7 +21,6 @@ cat = {"fysik": "phy",
 
 
 
-
 def main():
 
     while True:
@@ -35,12 +31,12 @@ def main():
         # TODO 5p Gör så att det finns ett sätt att avsluta programmet, om användaren skriver Q så skall programmet stängas av
         #      Beskriv i hjälptexten hur man avslutar programmet
         # TODO 5p Gör så att hjälptexten skrivs ut om användaren skriver h eller H
-        aaa = input(">")
-        a, b = aaa.split()
-        c = cat[b]
+        user_input = input(">")
+        year, subject = user_input.split()
+        c = subject_dict[subject]
 
 
-        c = {"nobelPrizeYear": int(a),"nobelPrizeCategory":c}
+        c = {"nobelPrizeYear": int(year),"nobelPrizeCategory":c}
 
         res = requests.get("http://api.nobelprize.org/2.1/nobelPrizes", params=c).json()
         # TODO 5p  Lägg till någon typ av avskiljare mellan pristagare, exempelvis --------------------------
@@ -64,3 +60,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
