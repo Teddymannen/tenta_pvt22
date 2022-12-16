@@ -1,5 +1,6 @@
-import requests
+# Teddy Fredricson
 
+import requests
 from constants import HELP_STRING, API
 
 # Tips: använd sidan nedan för att se vilken data vi får tillbaks och hur apiet fungerar
@@ -19,9 +20,6 @@ field_dict = {
 # TODO 10p programmet skall ge en hjälpsam utskrift istället för en krasch om användaren skriver in fel input
 # TODO 15p om användaren inte anger ett område som exempelvis fysik eller kemi så skall den parametern inte skickas med
 #      till apiet och vi får då alla priser det året
-
-def selection():
-    pass
 
 
 def prize_share_calc(prize_money: int, share: str) -> float:
@@ -82,7 +80,6 @@ def main():
         eng_field = field_dict[field.lower()]
         eng_field = {"nobelPrizeYear": int(year), "nobelPrizeCategory": eng_field}
         nobel_prizes = requests.get(API, params=eng_field).json()
-
         print_prize_winner(nobel_prizes)
 
 
