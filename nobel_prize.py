@@ -6,7 +6,7 @@ from constants import HELP_STRING
 # vi använder oss enbart av /nobelPrizes
 # Dokumentation, hjälp samt verktyg för att testa apiet fins här: https://app.swaggerhub.com/apis/NobelMedia/NobelMasterData/2.1
 
-subject_dict = {
+field_dict = {
     "fysik": "phy",
     "kemi": "che",
     "litteratur": "lit",
@@ -20,24 +20,22 @@ subject_dict = {
 # TODO 15p om användaren inte anger ett område som exempelvis fysik eller kemi så skall den parametern inte skickas med
 #      till apiet och vi får då alla priser det året
 
-
 def main():
     print(HELP_STRING)
     while True:
-        # TODO 5p Skriv bara ut hjälptexten en gång när programmet startar inte efter varje gång användaren matat in en fråga
-        #      Förbättra hjälputskriften så att användaren vet vilka fält, exempelvis kemi som finns att välja på
-
-        # TODO 5p Gör så att det finns ett sätt att avsluta programmet, om användaren skriver Q så skall programmet stängas av
-        #      Beskriv i hjälptexten hur man avslutar programmet
-        # TODO 5p Gör så att hjälptexten skrivs ut om användaren skriver h eller H
         user_input = input(">")
+        # exit program if q or Q is entered
+        if user_input == "q" or user_input == "Q":
+            break
+        # print help if h or H is entered
+        if user_input == "h" or user_input == "H":
+            print(HELP_STRING)
+            continue
         year, field = user_input.split()
-        c = subject_dict[field]
+        eng_field = field_dict[field]
+        eng_field = {"nobelPrizeYear": int(year), "nobelPrizeCategory": eng_field}
 
-
-        c = {"nobelPrizeYear": int(year),"nobelPrizeCategory":c}
-
-        res = requests.get("http://api.nobelprize.org/2.1/nobelPrizes", params=c).json()
+        nobel_prizes = requests.get("http://api.nobelprize.org/2.1/nobelPrizes", params=eng_field).json()
         # TODO 5p  Lägg till någon typ av avskiljare mellan pristagare, exempelvis --------------------------
 
         # TODO 20p Skriv ut hur mycket pengar varje pristagare fick, tänk på att en del priser delas mellan flera mottagare, skriv ut både i dåtidens pengar och dagens värde
@@ -46,15 +44,17 @@ def main():
         #   Tips, titta på variabeln andel
         # Feynman fick exempelvis 1/3 av priset i fysik 1965, vilket borde gett ungefär 282000/3 kronor i dåtidens penningvärde
 
-        for p in res["nobelPrizes"]:
-            peng = p["prizeAmount"]
-            idagpeng = p["prizeAmountAdjusted"]
-            print(f"{p['categoryFullName']['se']} prissumma {peng} SEK")
+        for prize in nobel_prizes["nobelPrizes"]:
+            prize_money = prize["prizeAmount"]
+            prize_money_current_value = prize["prizeAmountAdjusted"]
+            print(f"{prize['categoryFullName']['se']}, prissumma {prize_money} SEK")
 
-            for m in p["laureates"]:
-                print(m['knownName']['en'])
-                print(m['motivation']['en'])
-                andel = m['portion']
+            for laureate in prize["laureates"]:
+                print(laureate['knownName']['en'])
+                print(laureate['motivation']['en'])
+                andel = laureate['portion']
+                print('-' * 20)
+
 
 
 if __name__ == '__main__':
