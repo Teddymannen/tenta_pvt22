@@ -51,6 +51,10 @@ def main():
         eng_field = field_dict[field]
         eng_field = {"nobelPrizeYear": int(year), "nobelPrizeCategory": eng_field}
         nobel_prizes = requests.get("http://api.nobelprize.org/2.1/nobelPrizes", params=eng_field).json()
+        # TODO 20p Skriv ut hur mycket pengar varje pristagare fick, tänk på att en del priser delas mellan flera mottagare, skriv ut både i dåtidens pengar och dagens värde
+        #   Skriv ut med tre decimalers precision. exempel 534515.123
+        #   Skapa en funktion som hanterar uträkningen av prispengar och skapa minst ett enhetestest för den funktionen
+        #   Tips, titta på variabeln andel
         # Feynman fick exempelvis 1/3 av priset i fysik 1965, vilket borde gett ungefär 282000/3 kronor i dåtidens penningvärde
 
         for prize in nobel_prizes["nobelPrizes"]:
