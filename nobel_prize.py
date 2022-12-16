@@ -16,8 +16,6 @@ field_dict = {
     "medicin": "med"
 }
 
-
-# TODO 10p programmet skall ge en hjälpsam utskrift istället för en krasch om användaren skriver in fel input
 # TODO 15p om användaren inte anger ett område som exempelvis fysik eller kemi så skall den parametern inte skickas med
 #      till apiet och vi får då alla priser det året
 
@@ -72,10 +70,16 @@ def main():
         # exit program if q or Q is entered
         if user_input == "q" or user_input == "Q":
             break
-        # print help if h or H is entered
+        # print HELP_STRING if h or H is entered
         if user_input == "h" or user_input == "H" or user_input == "":
             print(HELP_STRING)
             continue
+        # print error message if input is not in correct format
+        if len(user_input.split()) != 2 or user_input.split()[1] not in field_dict:
+            print("Felaktig inmatning")
+            print(HELP_STRING)
+            continue
+
         year, field = user_input.split()
         eng_field = field_dict[field.lower()]
         eng_field = {"nobelPrizeYear": int(year), "nobelPrizeCategory": eng_field}
